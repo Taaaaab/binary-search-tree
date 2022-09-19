@@ -67,6 +67,51 @@ function insertRec(root, key) {
         }
     }
 
+function deleteKey(key) {
+    root = deleteRec(root, key);
+}
+
+function deleteRec(root, key) {
+    if (root == null)
+    return root;
+
+    if (key < root.key)
+    root.left = deleteRec(root.left, key);
+    else if (key > root.key)
+    root.right = deleteRec(root.right, key);
+    
+    else {
+        if (root.left == null)
+        return root.right;
+    else if (root.right == null)
+        return root.left;
+    
+    root.key = minValue(root.right);
+    root.right = deleteRec(root.right, root.key);
+    }
+    return root;
+}
+
+function minValue(root) {
+    let minV = root.key;
+    while (root.left != null) {
+        minV = root.left.key;
+        root = root.left;
+    }
+    return minV;
+}
+
+function find(root, key) {
+    if (root == null ||
+    root.key == key)
+    return root;
+
+    if (root.key < key)
+    return find(root.right, key);
+
+    return find(root.left, key);
+}
+
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
       prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
@@ -128,4 +173,8 @@ root = buildTree(sortedArr, 0, n - 1);
 prettyPrint(root);
 
 insert(50);
+insert(20);
+prettyPrint(root);
+console.log(find(root, 50));
+deleteKey(20);
 prettyPrint(root);
