@@ -112,6 +112,25 @@ function find(root, key) {
     return find(root.left, key);
 }
 
+function levelOrder(root) {
+    if (!root) return [];
+    let result = [];
+    let queue = [root];
+   
+    while (queue.length != 0) {
+        let subArr = [];
+        const n = queue.length;
+        for (let i = 0; i < n; i++) {
+            let node = queue.pop();
+            subArr.push(node.key);
+            if (node.left) queue.unshift(node.left);
+            if (node.right) queue.unshift(node.right);
+        }
+        result.push(subArr);
+    }
+    return result;
+}
+
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
       prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
@@ -175,6 +194,7 @@ prettyPrint(root);
 insert(50);
 insert(20);
 prettyPrint(root);
-console.log(find(root, 50));
+console.log(find(root, 8));
 deleteKey(20);
 prettyPrint(root);
+console.log(levelOrder(root));
