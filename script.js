@@ -1,8 +1,8 @@
 // Build a Node class / factory
 
 class Node {
-    constructor(d) {
-        this.data = d;
+    constructor(item) {
+        this.key = item;
         this.left = null;
         this.right = null;
     }
@@ -11,9 +11,8 @@ class Node {
 // Build a Tree class / factory which accepts an array
 
 class Tree {
-    constructor(array) {
-        this.array = array;
-        this.root = buildTree(array, 0, n - 1);
+    constructor() {
+        this.root = null;
     }
 }
 
@@ -38,11 +37,41 @@ function buildTree(array, start, end) {
 
 };
 
+function insert(key) {
+    root = insertRec(root, key);
+}
+
+function insertRec(root, key) {
+    if (root == null) {
+        root = new Node(key);
+        return root;
+    }
+
+    if (key < root.key)
+        root.left = insertRec(root.left, key);
+    else if (key > root.key)
+        root.right = insertRec(root.right, key);
+
+    return root;
+}
+
+    function inOrder() {
+        inOrderRec(root);
+    }
+
+    function inOrderRec(root) {
+        if (root != null) {
+            inOrderRec(root.left);
+            console.log(root.key + "->");
+            inOrderRec(root.right);
+        }
+    }
+
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node.right !== null) {
       prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
     }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.key}`);
     if (node.left !== null) {
       prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
@@ -92,8 +121,11 @@ const mergeSort = arr => {
 };
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
 let sortedArr = mergeSort(array);
-console.log(sortedArr);
 const n = sortedArr.length;
 root = buildTree(sortedArr, 0, n - 1);
+prettyPrint(root);
+
+insert(50);
 prettyPrint(root);
