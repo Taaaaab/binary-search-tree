@@ -91,7 +91,7 @@ class Tree {
             const n = queue.length;
             for (let i = 0; i < n; i++) {
                 let node = queue.pop();
-                subArr.push(node.key);
+                subArr.push(node.data);
                 if (node.left) queue.unshift(node.left);
                 if (node.right) queue.unshift(node.right);
             }
@@ -138,15 +138,15 @@ class Tree {
         return this.root;
     }
 
-    search(node, data) {
+    find(node, data) {
         if (node === null) 
             return null;
 
         else if (data < node.data)
-            return this.search(node.left, data);
+            return this.find(node.left, data);
 
         else if (data > node.data)
-            return this.search(node.right, data);
+            return this.find(node.right, data);
 
         else 
             return node;
@@ -262,3 +262,6 @@ root = BST.getRootNode();
 prettyPrint(root);
 BST.postOrder(root);
 BST.preOrder(root);
+console.log(BST.find(root, 25));
+console.log(BST.levelOrder(root));
+
