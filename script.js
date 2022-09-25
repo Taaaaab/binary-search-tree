@@ -209,15 +209,27 @@ class Tree {
         return (Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1);
     }
 
+    traverse(root, array) {
+        if (array !== undefined) array.push(root.data);
+        if (root.leftPart !== null) {
+          this.traverse(root.leftPart, array);
+        }
+    
+        if (root.rightPart !== null) {
+          this.traverse(root.rightPart, array);
+        }
+        return array;
+      }
+
     reBalance(root) {
-        let n = this.isBalanced(root);
-        if (n != -1) {
-            return root;
-        }
-        else {
-            root = buildTree(root);
-            this.preOrder(root);
-        }
+        if (this.isBalanced(this.root)) return this.root; 
+
+        let rebalancedNewTreeArray = [];
+        rebalancedNewTreeArray = this.traverse(this.root, rebalancedNewTreeArray);
+    
+        let balancedTree = buildTree(rebalancedNewTreeArray);
+    
+        return balancedTree.root;
     }
     
 }
@@ -313,12 +325,36 @@ function storeBSTNodes(root, nodes) {
     storeBSTNodes(root.right, nodes);
 }
 
-// const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+function treeTest(array) {
+    let sortedArr = mergeSort(array);
+    let BST = new Tree();
+    for (let i = 0; i < sortedArr.length; i++) {
+        BST.insert(sortedArr[i]);
+    }
+    
+    root = BST.getRootNode();
+    root = buildTree(root);
+    console.log(BST.isBalanced(root));
+    BST.inOrder(root);
+    BST.preOrder(root);
+    BST.postOrder(root);
 
-// let sortedArr = mergeSort(array);
-// const n = sortedArr.length;
-// root = buildTree(sortedArr, 0, n - 1);
-// prettyPrint(root);
+    BST.insert(101);
+    BST.insert(200);
+    BST.insert(222);
+    console.log(BST.isBalanced(root));
+
+    BST.reBalance();
+    console.log(BST.isBalanced(root));
+    console.log(BST.levelOrder(root));
+    BST.preOrder(root);
+    BST.postOrder(root);
+    BST.inOrder(root);
+    prettyPrint(root);
+}
+const myArray = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
+treeTest(myArray);
 
 // let BST = new Tree();
 // BST.insert(15);
